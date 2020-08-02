@@ -1,7 +1,9 @@
 package com.example.trivial;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton prevButton;             // prevButton instance
     private int currentQuestionIndex = 0;       // currentQuestionIndex instance set to 0
     private List<Question> mQuestionList;       // mQuestionList instance
-
+    private boolean mUserChooseCorrect;
 
 
     //onCreate method
@@ -90,15 +92,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
+            case R.id.true_button:
+                checkAnswer(true);
+                updateQuestion();
+                break;
+
             case R.id.false_button:
                 checkAnswer(false);
                 updateQuestion();
                 break;
 
-            case R.id.true_button:
-                checkAnswer(true);
-                updateQuestion();
-                break;
         }
 
     }
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean answerIsTrue = mQuestionList.get(currentQuestionIndex).isAnswerTrue();
         int toastMessageId = 0;
         if (userChooseCorrect == answerIsTrue) {
+            fadeView();
             toastMessageId = R.string.correct_answer;  // add resource for correct answer
         } else {
             shakeAnimation();
@@ -126,12 +130,95 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+            //fadeView method
+    private void fadeView() {
+
+        final CardView cardView = findViewById(R.id.cardView);                         // cardView object
+        AlphaAnimation animation= new AlphaAnimation(1.0f, 0.0f);                // animation object
+
+        animation.setDuration(350);
+        animation.setRepeatCount(1);
+        animation.setRepeatMode(Animation.REVERSE);
+
+        cardView.setAnimation(animation);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            /**
+             * <p>Notifies the start of the animation.</p>
+             *
+             * @param animation The started animation.
+             */
+            @Override
+            public void onAnimationStart(Animation animation) {
+                cardView.setCardBackgroundColor(Color.GREEN);
+            }
+
+            /**
+             * <p>Notifies the end of the animation. This callback is not invoked
+             * for animations with repeat count set to INFINITE.</p>
+             *
+             * @param animation The animation which reached its end.
+             */
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                cardView.setCardBackgroundColor(Color.WHITE);
+            }
+
+            /**
+             * <p>Notifies the repetition of the animation.</p>
+             *
+             * @param animation The animation which was repeated.
+             */
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+    }
+
             // shakeAnimation method
     private void shakeAnimation() {
-        Animation shake = AnimationUtils.loadAnimation(MainActivity.this,           // shake object
+        Animation shake = AnimationUtils.loadAnimation(MainActivity.this,           // LoadAnimationUtils on shake
                 R.anim.shake_animation);    //recourse added from anim res folder
 
-        CardView cardView = findViewById(R.id.cardView);    //cardView activity added on cardView object
+        final CardView cardView = findViewById(R.id.cardView);    //cardView activity added on cardView object
         cardView.setAnimation(shake);                       // shake set on carView object
+
+        shake.setAnimationListener(new Animation.AnimationListener() {
+
+            /**
+             * <p>Notifies the start of the animation.</p>
+             *
+             * @param animation The started animation.
+             */
+            @Override
+            public void onAnimationStart(Animation animation) {
+                cardView.setCardBackgroundColor(Color.RED);
+
+            }
+
+            /**
+             * <p>Notifies the end of the animation. This callback is not invoked
+             * for animations with repeat count set to INFINITE.</p>
+             *
+             * @param animation The animation which reached its end.
+             */
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                cardView.setCardBackgroundColor(Color.WHITE);
+
+            }
+
+            /**
+             * <p>Notifies the repetition of the animation.</p>
+             *
+             * @param animation The animation which was repeated.
+             */
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

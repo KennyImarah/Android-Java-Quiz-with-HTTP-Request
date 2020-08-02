@@ -26,11 +26,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="357dp"
-        android:layout_height="166dp"
-        android:layout_marginTop="112dp"
+        android:layout_width="359dp"
+        android:layout_height="223dp"
+        android:layout_marginTop="108dp"
         android:background="@color/cardview_light_background"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
@@ -42,16 +43,16 @@
 
         <TextView
             android:id="@+id/question_textview"
-            android:layout_width="315dp"
-            android:layout_height="139dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:autoLink="map"
-            android:background="@color/cardview_light_background"
+            android:background="@android:color/transparent"
             android:text="@string/this_is_where_we_will_add_text_questions_will_appear_here"
             android:textAlignment="center"
             android:textSize="24sp"
             android:visibility="visible" />
     </androidx.cardview.widget.CardView>
-
 
     <Button
         android:id="@+id/false_button"
