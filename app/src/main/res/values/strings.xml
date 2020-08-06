@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Trivial</string>
+    <string name="trivia">Trivia</string>
+    <string name="true_button">TRUE</string>
+    <string name="false_button">FALSE</string>
+    <string name="prev_button">prev_button</string>
+    <string name="question_counter">"0 of 100 "</string>
+    <string name="next_button">next_button</string>
+    <string name="this_is_where_we_will_add_text_questions_will_appear_here">This is where we will add text. Questions will appear here</string>
+    <string name="correct_answer">Correct !</string>
+    <string name="wrong_answer">Wrong !</string>
+    <string name="score_textview">TextView</string>
+    <string name="prev_score">Highiest score</string>
+    <string name="highest_score">Highest Score:</string>
+</resources>

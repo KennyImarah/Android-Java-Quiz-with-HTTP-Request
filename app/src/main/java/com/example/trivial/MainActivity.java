@@ -2,6 +2,7 @@ package com.example.trivial;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -17,9 +18,13 @@ import androidx.cardview.widget.CardView;
 import com.example.trivial.data.AnswerListAsynqResponse;
 import com.example.trivial.data.QuestionBank;
 import com.example.trivial.model.Question;
+import com.example.trivial.model.Score;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import util.Prefs;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,6 +38,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Question> mQuestionList;       // mQuestionList instance
     private boolean mUserChooseCorrect;
 
+    private TextView scoreTextView;      //scoreTextView instance
+
+    private int scoreCounter = 0;        // scoreCounter initialized
+
+    private Score mScore;                // Score instance
+
+    private Prefs mPrefs;                // Prefs instance
+
+    private TextView highestScore;
+
 
     //onCreate method
     @Override
@@ -40,7 +55,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // add activity to view
+        mScore = new Score();           // score object
+
+        mPrefs = new Prefs(MainActivity.this);  // MainActivity set on mPrefs
+
+                          mPrefs.saveHighestScore(scoreCounter);
+                          Log.d("Second", "onClick: " + mPrefs.getHighestScore());
+
+            // add activity to view
+
+        highestScore = findViewById(R.id.highScoreTextView);
+        scoreTextView = findViewById(R.id.scoreTextView);
         nextButton = findViewById(R.id.next_button);
         prevButton = findViewById(R.id.prev_button);
         trueButton = findViewById(R.id.true_button);
@@ -53,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prevButton.setOnClickListener(this);
         trueButton.setOnClickListener(this);
         falseButton.setOnClickListener(this);
+
+        highestScore.setText(MessageFormat.format("Current Highest Score: {0}", String.valueOf(mPrefs.getHighestScore())));
+        scoreTextView.setText(MessageFormat.format("Current Score: {0}", String.valueOf(mScore.getScore())));
 
                  mQuestionList = new QuestionBank().getQuestions(new AnswerListAsynqResponse() {
                     @Override
@@ -82,15 +110,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.next_button:
                 currentQuestionIndex = (currentQuestionIndex + 1) % mQuestionList.size();  // set currentQuestionIndex for button
                 updateQuestion();
-
                 break;
 
             case R.id.prev_button:                          // add action on prev_button
                if (currentQuestionIndex > 0 )               // if statement to avoid out of bound call
                 currentQuestionIndex = (currentQuestionIndex - 1) % mQuestionList.size();
                updateQuestion();
-
-                break;
+               break;
 
             case R.id.true_button:
                 checkAnswer(true);
@@ -111,13 +137,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int toastMessageId = 0;
         if (userChooseCorrect == answerIsTrue) {
             fadeView();
+            addPoint();
             toastMessageId = R.string.correct_answer;  // add resource for correct answer
         } else {
             shakeAnimation();
+            deductPoint();
+
             toastMessageId = R.string.wrong_answer;
         }
         Toast.makeText(MainActivity.this, toastMessageId,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private void addPoint(){
+         scoreCounter += 10;
+
+        mScore.setScore(scoreCounter);
+        scoreTextView.setText(MessageFormat.format("Current Score: {0}", String.valueOf(mScore.getScore())));
+
+
+        Log.d("Score", "addPoint: " + mScore.getScore());
+    }
+
+    private void deductPoint(){
+
+        scoreCounter -= 10;
+        if (scoreCounter > 0 ) {
+
+            mScore.setScore(scoreCounter);
+            scoreTextView.setText(MessageFormat.format("Current Score: {0}", String.valueOf(mScore.getScore())));
+        } else {
+            scoreCounter = 0;
+
+            mScore.setScore(scoreCounter);
+            scoreTextView.setText(MessageFormat.format("Current Score: {0}", String.valueOf(mScore.getScore())));
+        }
+
+//        TextView scoreView = new TextView();
+
+        Log.d("Score", "addPoint: " + mScore.getScore());
     }
 
     // updateQuestion method
@@ -136,13 +194,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final CardView cardView = findViewById(R.id.cardView);                         // cardView object
         AlphaAnimation animation= new AlphaAnimation(1.0f, 0.0f);                // animation object
 
-        animation.setDuration(350);
-        animation.setRepeatCount(1);
-        animation.setRepeatMode(Animation.REVERSE);
+        animation.setDuration(350);                             //set animation duration
+        animation.setRepeatCount(1);                            // animation repeat
+        animation.setRepeatMode(Animation.REVERSE);             // animation mode
 
-        cardView.setAnimation(animation);
+        cardView.setAnimation(animation);                       // assign animation object on cardView object
 
-        animation.setAnimationListener(new Animation.AnimationListener() {
+        animation.setAnimationListener(new Animation.AnimationListener() {    // setanimationListener
             /**
              * <p>Notifies the start of the animation.</p>
              *
@@ -221,4 +279,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        mPrefs.saveHighestScore(mScore.getScore() );
+        super.onPause();
+    }
 }
+

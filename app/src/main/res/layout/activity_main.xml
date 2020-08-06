@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="94dp"
         android:layout_height="37dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
         android:ellipsize="middle"
         android:fontFamily="@font/chewy"
@@ -54,38 +54,38 @@
             android:visibility="visible" />
     </androidx.cardview.widget.CardView>
 
+
     <Button
         android:id="@+id/false_button"
-        android:layout_width="55dp"
+        android:layout_width="65dp"
         android:layout_height="40dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="56dp"
         android:background="@android:color/holo_red_light"
         android:elevation="10dp"
         android:text="@string/false_button"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/next_button"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintStart_toEndOf="@+id/true_button"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintVertical_bias="0.018" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/true_button"
-        android:layout_width="55dp"
+        android:layout_width="65dp"
         android:layout_height="40dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="56dp"
         android:background="@android:color/holo_red_light"
         android:elevation="10dp"
         android:text="@string/true_button"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.364"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.052" />
 
     <ImageButton
         android:id="@+id/prev_button"
@@ -106,7 +106,7 @@
         android:layout_width="40dp"
         android:layout_height="30dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="68dp"
+        android:layout_marginEnd="40dp"
         android:background="@android:color/holo_red_light"
         android:contentDescription="@string/next_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,10 +115,10 @@
 
     <TextView
         android:id="@+id/counter_text"
-        android:layout_width="93dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="308dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="292dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray"
         android:fontFamily="@font/chewy"
         android:text="@string/question_counter"
@@ -128,6 +128,41 @@
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <TextView
+        android:id="@+id/scoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:fontFamily="@font/chewy"
+        android:text="@string/score_textview"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/highScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/chewy"
+        android:text="@string/highest_score"
+        app:layout_constraintBottom_toBottomOf="@+id/scoreTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.663" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
